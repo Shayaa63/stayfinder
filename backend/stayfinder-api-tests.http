@@ -1,0 +1,141 @@
+### StayFinder API smoke tests
+### VS Code extension: REST Client
+### Start backend at http://localhost:4000 before running.
+### Replace the IDs and cookie below with values from YOUR local test database/session.
+
+@baseUrl = http://localhost:4000
+@cookie = REPLACE_WITH_AUTH_SESSION_COOKIE
+@propertyId = REPLACE_WITH_EXISTING_PUBLISHED_PROPERTY_UUID
+@ownedPropertyId = REPLACE_WITH_YOUR_OWN_PROPERTY_UUID
+@missingPropertyId = 00000000-0000-4000-8000-000000000000
+@bookingId = REPLACE_WITH_BOOKING_UUID
+
+### 1. PUBLIC: list published properties — expected 200
+GET {{baseUrl}}/properties
+
+### 2. PUBLIC: filter properties — expected 200
+GET {{baseUrl}}/properties?city=Stockholm&guests=2&maxPrice=2000
+
+### 3. PUBLIC: property details — expected 200
+GET {{baseUrl}}/properties/{{propertyId}}
+
+### 4. INVALID UUID — expected 400
+GET {{baseUrl}}/properties/not-a-uuid
+
+### 5. VALID UUID, missing property — expected 404
+GET {{baseUrl}}/properties/{{missingPropertyId}}
+
+### 6. AUTH REQUIRED: list my properties while logged out — expected 401
+GET {{baseUrl}}/properties/mine
+
+### 7. AUTH REQUIRED: list bookings while logged out — expected 401
+GET {{baseUrl}}/bookings
+
+### 8. CREATE PROPERTY while logged in — expected 201
+POST {{baseUrl}}/properties
+Content-Type: application/json
+Cookie: {{cookie}}
+
+{
+  "title": "API Test Apartment",
+  "description": "A test property created through the API.",
+  "city": "Stockholm",
+  "country": "Sweden",
+  "address": "Test Street 1",
+  "price_per_night": 1200,
+  "max_guests": 2,
+  "images": [],
+  "is_published": true
+}
+
+### 9. INVALID PROPERTY BODY — expected 400
+POST {{baseUrl}}/properties
+Content-Type: application/json
+Cookie: {{cookie}}
+
+{
+  "title": "",
+  "description": "Invalid test data",
+  "city": "Stockholm",
+  "country": "Sweden",
+  "address": "Test Street 1",
+  "price_per_night": -10,
+  "max_guests": 0,
+  "images": [],
+  "is_published": true
+}
+
+### 10. MALFORMED JSON — expected 400
+POST {{baseUrl}}/properties
+Content-Type: application/json
+Cookie: {{cookie}}
+
+{ "title": "Broken JSON",
+
+### 11. CREATE BOOKING while logged in — expected 201
+### Use a published property that is not owned by the logged-in user.
+POST {{baseUrl}}/bookings
+Content-Type: application/json
+Cookie: {{cookie}}
+
+{
+  "property_id": "{{propertyId}}",
+  "guest_name": "API Test Guest",
+  "guest_email": "api-test@example.com",
+  "check_in": "2027-06-10",
+  "check_out": "2027-06-13",
+  "guests": 2
+}
+
+### 12. INVALID BOOKING — expected 400
+POST {{baseUrl}}/bookings
+Content-Type: application/json
+Cookie: {{cookie}}
+
+{
+  "property_id": "not-a-uuid",
+  "guest_name": "A",
+  "guest_email": "not-an-email",
+  "check_in": "not-a-date",
+  "check_out": "2027-06-10",
+  "guests": 0
+}
+
+### 13. UPDATE OWN PROPERTY — expected 200
+### Use a property owned by the authenticated user.
+PATCH {{baseUrl}}/properties/{{ownedPropertyId}}
+Content-Type: application/json
+Cookie: {{cookie}}
+
+{
+  "title": "Updated API Test Apartment"
+}
+
+### 14. UPDATE PROPERTY NOT OWNED BY USER — expected 403
+### propertyId must belong to another user.
+PATCH {{baseUrl}}/properties/{{propertyId}}
+Content-Type: application/json
+Cookie: {{cookie}}
+
+{
+  "title": "Attempted unauthorized update"
+}
+
+### 15. INVALID BOOKING ID — expected 400
+GET {{baseUrl}}/bookings/not-a-uuid
+Cookie: {{cookie}}
+
+### 16. GET MY BOOKINGS while logged in — expected 200
+GET {{baseUrl}}/bookings?limit=100
+Cookie: {{cookie}}
+
+### 17. DELETE PROPERTY WITH EXISTING BOOKINGS — expected 409
+### Only run if ownedPropertyId has at least one booking and the API prevents deletion.
+DELETE {{baseUrl}}/properties/{{ownedPropertyId}}
+Cookie: {{cookie}}
+
+### Notes
+# - Some route implementations may use a different response body shape; the status code is the primary assertion here.
+# - If your app's route prefix or query parameter names differ, adjust the request to match the actual route files.
+# - Do not run destructive requests against real or production data.
+# - Cookie-based auth may require the exact cookie name/value from browser DevTools.
