@@ -25,11 +25,11 @@ function StatusBadge({ status }: { status: Booking["status"] }) {
     cancelled: "bg-stone-100 text-stone-500 ring-stone-200",
   };
 
-  const labels = {
-    pending: "Pending",
-    confirmed: "Confirmed",
-    cancelled: "Cancelled",
-  };
+const labels = {
+  pending: "Väntar på svar",
+  confirmed: "Bekräftad",
+  cancelled: "Avbokad",
+};
 
   return (
     <span
@@ -65,7 +65,7 @@ function SectionHeading({
       </div>
 
       <span className="rounded-full bg-[#f0ebe3] px-3 py-1.5 text-sm font-medium text-[#685b4d]">
-        {count} {count === 1 ? "item" : "items"}
+        {count} {count === 1 ? "objekt" : "objekt"}
       </span>
     </div>
   );
@@ -135,7 +135,7 @@ export default function DashboardPage() {
               const property = await api<Property>(`/properties/${id}`);
               return [id, property.title] as const;
             } catch {
-              return [id, "Property title unavailable"] as const;
+              return [id, "Boendets titel kunde inte hämtas"] as const;
             }
           }),
         );
@@ -148,7 +148,7 @@ export default function DashboardPage() {
         });
       } catch (err) {
         setError(
-          err instanceof Error ? err.message : "Could not load dashboard",
+          err instanceof Error ? err.message : "Kunde inte ladda översikten",
         );
       } finally {
         setDashboardLoading(false);
@@ -178,7 +178,7 @@ export default function DashboardPage() {
         ),
       }));
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Could not update booking");
+      setError(err instanceof Error ? err.message : "Kunde inte uppdatera bokningen");
     } finally {
       setUpdatingBookingId(null);
     }
@@ -186,7 +186,7 @@ export default function DashboardPage() {
 
   async function deleteBooking(bookingId: string) {
     const confirmed = window.confirm(
-      "Are you sure you want to delete this booking?",
+      "Är du säker på att du vill ta bort den här bokningen?",
     );
 
     if (!confirmed) return;
@@ -206,7 +206,7 @@ export default function DashboardPage() {
         ),
       }));
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Could not delete booking");
+      setError(err instanceof Error ? err.message : "Kunde inte ta bort bokningen");
     } finally {
       setDeletingBookingId(null);
     }
@@ -217,17 +217,17 @@ export default function DashboardPage() {
       setError("");
 
       if (!editCheckIn || !editCheckOut) {
-        setError("Please select both check-in and check-out dates.");
+        setError("Välj både inchecknings- och utcheckningsdatum.");
         return;
       }
 
       if (editCheckOut <= editCheckIn) {
-        setError("Check-out must be after check-in.");
+        setError("Utcheckningsdatumet måste vara efter incheckningsdatumet.");
         return;
       }
 
       if (!Number.isInteger(editGuests) || editGuests < 1 || editGuests > 50) {
-        setError("Guests must be between 1 and 50.");
+        setError("Antalet gäster måste vara mellan 1 och 50.");
         return;
       }
 
@@ -258,7 +258,7 @@ export default function DashboardPage() {
 
       setEditingBookingId(null);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Could not update booking");
+      setError(err instanceof Error ? err.message : "Kunde inte uppdatera bokningen");
     } finally {
       setUpdatingBookingId(null);
     }
@@ -315,27 +315,26 @@ export default function DashboardPage() {
 
           <div className="relative z-10 max-w-2xl">
             <p className="text-xs font-semibold uppercase tracking-[0.25em] text-[#92755c]">
-              STAYFINDER · YOUR SPACE
+              STAYFINDER · DIN PLATS
             </p>
 
             <h1 className="mt-5 text-4xl font-semibold leading-tight tracking-tight text-[#342e28] sm:text-5xl">
-              Welcome back.
+              Välkommen tillbaka
               <br />
               <span className="font-normal italic text-[#92755c]">
-                Make yourself at home.
+                Känn dig som hemma.
               </span>
             </h1>
 
             <p className="mt-5 max-w-lg text-sm leading-7 text-[#74695d] sm:text-base">
-              Manage your stays, welcome your guests and keep everything
-              organized in one place.
+              Hantera dina bokningar, välkomna dina gäster och håll allt samlat på ett ställe.
             </p>
 
             <Link
               href="/properties"
               className="mt-8 inline-flex items-center gap-3 rounded-full bg-[#342e28] px-6 py-3.5 text-sm font-medium text-white transition hover:bg-[#514438]"
             >
-              Explore stays
+              Utforska boenden
               <span aria-hidden="true">↗</span>
             </Link>
           </div>
@@ -344,7 +343,7 @@ export default function DashboardPage() {
         {/* Statistics */}
         <section className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
           <div className="rounded-2xl border border-[#eae4db] bg-white p-6">
-            <p className="text-sm text-[#8b8176]">Your properties</p>
+            <p className="text-sm text-[#8b8176]">Boenden du hyr ut</p>
             <div className="mt-3 flex items-end justify-between">
               <p className="text-4xl font-semibold tracking-tight">
                 {data.properties.length}
@@ -357,7 +356,7 @@ export default function DashboardPage() {
           </div>
 
           <div className="rounded-2xl border border-[#eae4db] bg-white p-6">
-            <p className="text-sm text-[#8b8176]">Booking requests</p>
+            <p className="text-sm text-[#8b8176]">Bokningsförfrågningar</p>
             <div className="mt-3 flex items-end justify-between">
               <p className="text-4xl font-semibold tracking-tight">
                 {bookingRequests.length}
@@ -367,12 +366,12 @@ export default function DashboardPage() {
               </span>
             </div>
             <p className="mt-2 text-xs text-[#9b9186]">
-              {pendingCount} waiting for your response
+              {pendingCount} väntar på ditt svar
             </p>
           </div>
 
           <div className="rounded-2xl border border-[#eae4db] bg-white p-6">
-            <p className="text-sm text-[#8b8176]">My bookings</p>
+            <p className="text-sm text-[#8b8176]">Mina bokningar</p>
             <div className="mt-3 flex items-end justify-between">
               <p className="text-4xl font-semibold tracking-tight">
                 {myBookings.length}
@@ -381,7 +380,7 @@ export default function DashboardPage() {
                 ◷
               </span>
             </div>
-            <p className="mt-2 text-xs text-[#9b9186]">Your upcoming stays</p>
+            <p className="mt-2 text-xs text-[#9b9186]">Dina kommande vistelser</p>
           </div>
         </section>
 
@@ -399,23 +398,23 @@ export default function DashboardPage() {
         {/* Properties */}
         <section className="mt-16">
           <SectionHeading
-            eyebrow="YOUR COLLECTION"
-            title="Your properties"
+            eyebrow="DINA BOENDEN"
+            title="Boenden du hyr ut"
             description="The places you share with the world."
             count={data.properties.length}
           />
 
           {data.properties.length === 0 ? (
             <div className="rounded-3xl border border-dashed border-[#d9d0c5] bg-white px-6 py-12 text-center">
-              <p className="text-lg font-medium">Your first stay starts here.</p>
+              <p className="text-lg font-medium">Ditt första boende börjar här.</p>
               <p className="mt-2 text-sm text-[#8b8176]">
-                You haven't added any properties yet.
+                Du har inte lagt till något boende ännu.
               </p>
               <Link
                 href="/properties/new"
                 className="mt-5 inline-flex rounded-full bg-[#342e28] px-5 py-3 text-sm text-white transition hover:bg-[#514438]"
               >
-                Add a property
+                Lägg till boende
               </Link>
             </div>
           ) : (
@@ -443,7 +442,7 @@ export default function DashboardPage() {
                       )}
 
                       <span className="absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1.5 text-xs font-medium text-[#514438] backdrop-blur">
-                        Your property
+                        Ditt boende
                       </span>
                     </div>
 
@@ -461,7 +460,7 @@ export default function DashboardPage() {
                           <strong className="text-base text-[#342e28]">
                             {money(property.price_per_night)} kr
                           </strong>{" "}
-                          / night
+                          / natt
                         </p>
                         <span className="text-lg text-[#92755c]">↗</span>
                       </div>
@@ -473,20 +472,20 @@ export default function DashboardPage() {
           )}
         </section>
 
-        {/* Booking requests */}
+        {/* Bokningsförfrågningar */}
         <section className="mt-16">
           <SectionHeading
-            eyebrow="HOSTING"
-            title="Booking requests"
-            description="Reservations other guests have made at your properties."
+            eyebrow="UTHYRNING"
+            title="Bokningsförfrågningar"
+            description="Bokningar som andra gäster har gjort på dina boenden."
             count={bookingRequests.length}
           />
 
           {bookingRequests.length === 0 ? (
             <div className="rounded-3xl border border-[#eae4db] bg-white px-6 py-10 text-center">
-              <p className="text-lg font-medium">No requests just yet.</p>
+              <p className="text-lg font-medium">Inga förfrågningar ännu.</p>
               <p className="mt-2 text-sm text-[#8b8176]">
-                New reservations for your properties will appear here.
+                Nya bokningsförfrågningar för dina boenden visas här.
               </p>
             </div>
           ) : (
@@ -499,10 +498,10 @@ export default function DashboardPage() {
                   <div className="flex flex-wrap items-start justify-between gap-3">
                     <div>
                       <p className="text-xs font-semibold uppercase tracking-wider text-[#92755c]">
-                        GUEST RESERVATION
+                        GÄSTBOKNING
                       </p>
                       <h3 className="mt-2 text-lg font-semibold">
-                        {propertyTitles.get(booking.property_id) ?? "Your property"}
+                        {propertyTitles.get(booking.property_id) ?? "Ditt boende"}
                       </h3>
                     </div>
                     <StatusBadge status={booking.status} />
@@ -516,15 +515,15 @@ export default function DashboardPage() {
 
                     <div className="mt-4 grid grid-cols-2 gap-4 border-t border-[#eae4db] pt-4">
                       <div>
-                        <p className="text-xs text-[#9b9186]">Check-in</p>
+                        <p className="text-xs text-[#9b9186]">Incheckning</p>
                         <p className="mt-1 text-sm font-medium">{booking.check_in}</p>
                       </div>
                       <div>
-                        <p className="text-xs text-[#9b9186]">Check-out</p>
+                        <p className="text-xs text-[#9b9186]">Utcheckning</p>
                         <p className="mt-1 text-sm font-medium">{booking.check_out}</p>
                       </div>
                       <div>
-                        <p className="text-xs text-[#9b9186]">Guests</p>
+                        <p className="text-xs text-[#9b9186]">Gäster</p>
                         <p className="mt-1 text-sm font-medium">{booking.guests}</p>
                       </div>
                     </div>
@@ -565,8 +564,8 @@ export default function DashboardPage() {
                     className="mt-4 text-xs font-medium text-[#a16b60] transition hover:text-red-800 disabled:opacity-50"
                   >
                     {deletingBookingId === booking.booking_id
-                      ? "Deleting..."
-                      : "Delete booking"}
+                      ? "Tar bort..."
+                      : "Ta bort bokning"}
                   </button>
                 </article>
               ))}
@@ -574,26 +573,26 @@ export default function DashboardPage() {
           )}
         </section>
 
-        {/* My bookings */}
+        {/* Mina bokningar */}
         <section className="mt-16">
           <SectionHeading
             eyebrow="TRAVEL"
-            title="My bookings"
-            description="Your reservations and upcoming stays."
+            title="Mina bokningar"
+            description="Dina bokningar och kommande vistelser."
             count={myBookings.length}
           />
 
           {myBookings.length === 0 ? (
             <div className="rounded-3xl border border-[#eae4db] bg-white px-6 py-10 text-center">
-              <p className="text-lg font-medium">Your next adventure awaits.</p>
+              <p className="text-lg font-medium">Ditt nästa äventyr väntar.</p>
               <p className="mt-2 text-sm text-[#8b8176]">
-                You haven't booked a stay yet.
+                Du har inte bokat något boende ännu.
               </p>
               <Link
                 href="/properties"
                 className="mt-5 inline-flex rounded-full bg-[#342e28] px-5 py-3 text-sm text-white transition hover:bg-[#514438]"
               >
-                Explore properties
+                Utforska boenden
               </Link>
             </div>
           ) : (
@@ -606,12 +605,12 @@ export default function DashboardPage() {
                   <div className="flex flex-wrap items-start justify-between gap-3">
                     <div>
                       <p className="text-xs font-semibold uppercase tracking-wider text-[#92755c]">
-                        YOUR RESERVATION
+                        DIN BOKNING
                       </p>
                       <h3 className="mt-2 text-lg font-semibold">
                         {propertyTitles.get(booking.property_id) ??
                           bookingPropertyTitles[booking.property_id] ??
-                          "Property title unavailable"}
+                          "Boendets titel kunde inte hämtas"}
                       </h3>
                     </div>
                     <StatusBadge status={booking.status} />
@@ -619,15 +618,15 @@ export default function DashboardPage() {
 
                   <div className="mt-5 grid grid-cols-2 gap-4 sm:grid-cols-3">
                     <div>
-                      <p className="text-xs text-[#9b9186]">Check-in</p>
+                      <p className="text-xs text-[#9b9186]">Incheckning</p>
                       <p className="mt-1 text-sm font-medium">{booking.check_in}</p>
                     </div>
                     <div>
-                      <p className="text-xs text-[#9b9186]">Check-out</p>
+                      <p className="text-xs text-[#9b9186]">Utcheckning</p>
                       <p className="mt-1 text-sm font-medium">{booking.check_out}</p>
                     </div>
                     <div>
-                      <p className="text-xs text-[#9b9186]">Guests</p>
+                      <p className="text-xs text-[#9b9186]">Gäster</p>
                       <p className="mt-1 text-sm font-medium">{booking.guests}</p>
                     </div>
                   </div>
@@ -635,7 +634,7 @@ export default function DashboardPage() {
                   {booking.status !== "cancelled" &&
                     editingBookingId === booking.booking_id && (
                       <div className="mt-6 rounded-2xl bg-[#faf8f4] p-5">
-                        <h4 className="font-semibold">Edit your reservation</h4>
+                        <h4 className="font-semibold">Redigera din bokning</h4>
 
                         <div className="mt-4 grid gap-4 sm:grid-cols-3">
                           <div>
@@ -643,7 +642,7 @@ export default function DashboardPage() {
                               htmlFor={`edit-check-in-${booking.booking_id}`}
                               className="block text-xs font-medium text-[#766b60]"
                             >
-                              Check-in
+                              Incheckning
                             </label>
                             <input
                               id={`edit-check-in-${booking.booking_id}`}
@@ -659,7 +658,7 @@ export default function DashboardPage() {
                               htmlFor={`edit-check-out-${booking.booking_id}`}
                               className="block text-xs font-medium text-[#766b60]"
                             >
-                              Check-out
+                              Utcheckning
                             </label>
                             <input
                               id={`edit-check-out-${booking.booking_id}`}
@@ -676,7 +675,7 @@ export default function DashboardPage() {
                               htmlFor={`edit-guests-${booking.booking_id}`}
                               className="block text-xs font-medium text-[#766b60]"
                             >
-                              Number of guests
+                              Antal gäster
                             </label>
                             <input
                               id={`edit-guests-${booking.booking_id}`}
@@ -698,8 +697,8 @@ export default function DashboardPage() {
                             className="rounded-full bg-[#342e28] px-5 py-2.5 text-sm font-medium text-white transition hover:bg-[#514438] disabled:opacity-50"
                           >
                             {updatingBookingId === booking.booking_id
-                              ? "Saving..."
-                              : "Save changes"}
+                              ? "Uppdaterar..."
+                              : "Spara ändringar"}
                           </button>
 
                           <button
@@ -707,7 +706,7 @@ export default function DashboardPage() {
                             onClick={() => setEditingBookingId(null)}
                             className="rounded-full border border-[#e2d9ce] px-5 py-2.5 text-sm font-medium text-[#685b4d] transition hover:bg-white"
                           >
-                            Cancel
+                            Avbryt
                           </button>
                         </div>
                       </div>
@@ -727,7 +726,7 @@ export default function DashboardPage() {
                             }}
                             className="rounded-full border border-[#e2d9ce] px-4 py-2.5 text-sm font-medium text-[#685b4d] transition hover:bg-[#faf8f4]"
                           >
-                            Edit booking
+                            Redigera bokning
                           </button>
                         )}
 
@@ -740,8 +739,8 @@ export default function DashboardPage() {
                           className="rounded-full border border-[#ead4ce] px-4 py-2.5 text-sm font-medium text-[#a16b60] transition hover:bg-[#fbf3f0] disabled:opacity-50"
                         >
                           {updatingBookingId === booking.booking_id
-                            ? "Updating..."
-                            : "Cancel booking"}
+                            ? "Uppdaterar..."
+                            : "Avbryt bokning"}
                         </button>
                       </>
                     )}
@@ -753,8 +752,8 @@ export default function DashboardPage() {
                       className="ml-auto text-xs font-medium text-[#a16b60] transition hover:text-red-800 disabled:opacity-50"
                     >
                       {deletingBookingId === booking.booking_id
-                        ? "Deleting..."
-                        : "Delete booking"}
+                        ? "Tar bort..."
+                        : "Ta bort bokning"}
                     </button>
                   </div>
                 </article>
@@ -766,24 +765,24 @@ export default function DashboardPage() {
         {/* Bottom CTA */}
         <section className="mt-16 rounded-3xl bg-[#eae3d8] px-6 py-10 text-center sm:px-10">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#92755c]">
-            YOUR NEXT DESTINATION
+            DIN NÄSTA MÅL
           </p>
           <h2 className="mt-3 text-2xl font-semibold tracking-tight">
-            Somewhere new is waiting.
+            Någonstans ny är väntan.
           </h2>
           <p className="mt-2 text-sm text-[#74695d]">
-            Discover a place that feels like home.
+            Upptäck ett boende där du kan känna dig som hemma.
           </p>
           <Link
             href="/properties"
             className="mt-6 inline-flex rounded-full bg-[#342e28] px-6 py-3 text-sm font-medium text-white transition hover:bg-[#514438]"
           >
-            Browse all properties ↗
+            Bläddra bland alla egenskaper ↗
           </Link>
         </section>
 
         <footer className="py-10 text-center text-xs tracking-wide text-[#a49a8e]">
-          STAYFINDER · FIND YOUR PLACE
+          STAYFINDER · HITTA DITT BOENDE
         </footer>
       </div>
     </main>

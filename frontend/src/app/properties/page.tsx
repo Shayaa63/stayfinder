@@ -58,7 +58,7 @@ export default function PropertiesPage() {
 
   return (
     <main className="mx-auto max-w-6xl px-6 py-12">
-      <h1 className="text-3xl font-bold">Explore properties</h1>
+      <h1 className="text-3xl font-bold">Utforska boenden</h1>
 
       <div className="my-6 grid grid-cols-1 gap-4 rounded-xl border border-stone-200 p-5 sm:grid-cols-2 lg:grid-cols-4">
         <div>
