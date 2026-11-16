@@ -96,21 +96,7 @@ export async function updateBooking(
   return data;
 }
 
-export async function deleteBooking(
-  supabase: AppSupabaseClient,
-  id: string
-) {
-  const { data, error } = await supabase
-    .from("bookings")
-    .delete()
-    .eq("booking_id", id)
-    .select("booking_id")
-    .maybeSingle();
 
-  if (error) throw error;
-
-  return data;
-}
 
 export async function getOverlappingBooking(
   supabase: AppSupabaseClient,

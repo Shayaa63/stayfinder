@@ -28,7 +28,7 @@ export const createBookingSchema = z.object({
   })
     .int("Antalet gäster måste vara ett heltal")
     .min(1, "Du måste ange minst 1 gäst")
-    .max(50, "Det går inte att boka för fler än 50 gäster"),
+    .max(30, "Det går inte att boka för fler än 30 gäster"),
 }).refine(
   (data) => data.check_out > data.check_in,
   {
@@ -47,7 +47,7 @@ export const updateBookingSchema = z.object({
   guests: z.number()
     .int("Antalet gäster måste vara ett heltal")
     .min(1, "Du måste ange minst 1 gäst")
-    .max(50, "Det går inte att boka för fler än 50 gäster")
+    .max(30, "Det går inte att boka för fler än 30 gäster")
     .optional(),
 }).refine(
   (data) =>

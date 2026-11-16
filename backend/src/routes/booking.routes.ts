@@ -14,7 +14,6 @@ import {
   getBookingById,
   createBooking,
   updateBooking,
-  deleteBooking,
   getOverlappingBooking,
 } from "../database/booking.js";
 
@@ -310,75 +309,5 @@ if (isGuest && updates.status !== undefined) {
   return c.json(booking);
 });
 
-// DELETE /bookings/:id
-bookingRoutes.delete("/:id", async (c) => {
-  const user = c.get("user");
-
-  if (!user) {
-    return c.json({ error: "Unauthorized" }, 401);
-  }
-
-  const bookingId = c.req.param("id");
-
-  if (!uuidSchema.safeParse(bookingId).success) {
-    return c.json(
-      { error: "Invalid booking ID" },
-      400
-    );
-  }
-
-  const supabase = c.get("supabase");
-
-  const booking = await getBookingById(
-    supabase,
-    bookingId
-  );
-
-  if (!booking) {
-    return c.json(
-      { error: "Booking not found" },
-      404
-    );
-  }
-
-  const property = await getPropertyById(
-    supabase,
-    booking.property_id
-  );
-
-  if (!property) {
-    return c.json(
-      { error: "Property not found" },
-      404
-    );
-  }
-
-  const isGuest = booking.user_id === user.id;
-  const isHost = property.user_id === user.id;
-
-  if (!isGuest && !isHost) {
-    return c.json(
-      { error: "You are not allowed to delete this booking" },
-      403
-    );
-  }
-
-  const deletedBooking = await deleteBooking(
-    supabase,
-    bookingId
-  );
-
-  if (!deletedBooking) {
-    return c.json(
-      { error: "Booking not found" },
-      404
-    );
-  }
-
-  return c.json({
-    message: "Booking deleted",
-    booking_id: deletedBooking.booking_id,
-  });
-});
 
 export default bookingRoutes;
