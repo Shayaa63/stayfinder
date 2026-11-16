@@ -1,9 +1,10 @@
 -- ==========================================
--- STAYFINDER: SEED DATA 
+-- STAYFINDER: SEED DATA (körs vid `supabase db reset`)
 -- Policies ligger i supabase/migrations/
 -- ==========================================
 
 -- 1. TESTANVÄNDARE (behövs lokalt eftersom auth.users töms vid db reset)
+-- På hosted databas finns kontot redan och raden hoppas över.
 -- Lokalt lösenord: password123
 
 INSERT INTO auth.users (
@@ -25,10 +26,10 @@ INSERT INTO auth.users (
 )
 VALUES (
   '00000000-0000-0000-0000-000000000000',
-  '56db4e63-6dcc-426c-9cdd-e1c266aafea9',
+  '11111111-1111-4111-8111-111111111111',
   'authenticated',
   'authenticated',
-  'aisha_1@live.se',
+  'test@stayfinder.local',
   crypt('password123', gen_salt('bf')),
   now(),
   '{"provider":"email","providers":["email"]}',
@@ -54,9 +55,9 @@ INSERT INTO auth.identities (
 )
 VALUES (
   gen_random_uuid(),
-  '56db4e63-6dcc-426c-9cdd-e1c266aafea9',
-  '56db4e63-6dcc-426c-9cdd-e1c266aafea9',
-  '{"sub":"56db4e63-6dcc-426c-9cdd-e1c266aafea9","email":"aisha_1@live.se","email_verified":true}',
+  '11111111-1111-4111-8111-111111111111',
+  '11111111-1111-4111-8111-111111111111',
+  '{"sub":"11111111-1111-4111-8111-111111111111","email":"test@stayfinder.local","email_verified":true}',
   'email',
   now(),
   now(),
@@ -84,7 +85,7 @@ VALUES
 
 (
   'a1000000-0000-4000-8000-000000000001',
-  '56db4e63-6dcc-426c-9cdd-e1c266aafea9',
+  '11111111-1111-4111-8111-111111111111',
   'Modern Apartment in Central Stockholm',
   'Enjoy a bright and modern apartment in the heart of Stockholm. The property features a comfortable living room, fully equipped kitchen, stylish bedroom and easy access to restaurants, shopping and public transport.',
   'Stockholm',
@@ -98,7 +99,7 @@ VALUES
 
 (
   'a1000000-0000-4000-8000-000000000002',
-  '56db4e63-6dcc-426c-9cdd-e1c266aafea9',
+  '11111111-1111-4111-8111-111111111111',
   'Cozy Scandinavian City Apartment',
   'A cozy Scandinavian apartment with beautiful natural light and minimalist interior design. Perfect for couples or small families looking to explore the city while enjoying a peaceful place to stay.',
   'Gothenburg',
@@ -112,7 +113,7 @@ VALUES
 
 (
   'a1000000-0000-4000-8000-000000000003',
-  '56db4e63-6dcc-426c-9cdd-e1c266aafea9',
+  '11111111-1111-4111-8111-111111111111',
   'Stylish Malmö Loft',
   'Stay in a stylish loft with an open-plan layout, comfortable furniture and modern amenities. Located close to cafés, local shops and public transport, this property is ideal for a city getaway.',
   'Malmö',
@@ -126,7 +127,7 @@ VALUES
 
 (
   'a1000000-0000-4000-8000-000000000004',
-  '56db4e63-6dcc-426c-9cdd-e1c266aafea9',
+  '11111111-1111-4111-8111-111111111111',
   'Luxury Nordic Waterfront Villa',
   'Experience a relaxing stay in a spacious waterfront villa. Enjoy large windows, beautiful surroundings, generous living areas and a private outdoor space. Ideal for families and groups.',
   'Oslo',
@@ -140,7 +141,7 @@ VALUES
 
 (
   'a1000000-0000-4000-8000-000000000005',
-  '56db4e63-6dcc-426c-9cdd-e1c266aafea9',
+  '11111111-1111-4111-8111-111111111111',
   'Charming Copenhagen Townhouse',
   'A charming townhouse combining classic architecture with modern Scandinavian comfort. Explore Copenhagen by foot or bicycle and return to a welcoming home with plenty of space.',
   'Copenhagen',
@@ -154,7 +155,7 @@ VALUES
 
 (
   'a1000000-0000-4000-8000-000000000006',
-  '56db4e63-6dcc-426c-9cdd-e1c266aafea9',
+  '11111111-1111-4111-8111-111111111111',
   'Peaceful Lakeside Cabin',
   'Escape to a peaceful cabin surrounded by nature. Enjoy a warm and inviting interior, a fully equipped kitchen and beautiful lake views. A great choice for a relaxing weekend or longer holiday.',
   'Uppsala',
@@ -168,7 +169,7 @@ VALUES
 
 (
   'a1000000-0000-4000-8000-000000000007',
-  '56db4e63-6dcc-426c-9cdd-e1c266aafea9',
+  '11111111-1111-4111-8111-111111111111',
   'Bright Apartment Near the Beach',
   'A bright and airy apartment close to the beach. Enjoy a comfortable bedroom, open living space and convenient access to seaside walks, restaurants and local attractions.',
   'Helsingborg',
@@ -182,7 +183,7 @@ VALUES
 
 (
   'a1000000-0000-4000-8000-000000000008',
-  '56db4e63-6dcc-426c-9cdd-e1c266aafea9',
+  '11111111-1111-4111-8111-111111111111',
   'Contemporary Family Home',
   'A spacious contemporary home designed for comfortable family stays. Features multiple bedrooms, a large living room, modern kitchen and convenient access to nearby parks and attractions.',
   'Stockholm',
@@ -226,9 +227,9 @@ VALUES
 (
   'b1000000-0000-4000-8000-000000000001',
   'a1000000-0000-4000-8000-000000000001',
-  '56db4e63-6dcc-426c-9cdd-e1c266aafea9',
-  'Aisha Hashi',
-  'aisha_1@live.se',
+  '11111111-1111-4111-8111-111111111111',
+  'Test User',
+  'test@stayfinder.local',
   '2026-12-05',
   '2026-12-08',
   2,
@@ -238,9 +239,9 @@ VALUES
 (
   'b1000000-0000-4000-8000-000000000002',
   'a1000000-0000-4000-8000-000000000002',
-  '56db4e63-6dcc-426c-9cdd-e1c266aafea9',
-  'Aisha Hashi',
-  'aisha_1@live.se',
+  '11111111-1111-4111-8111-111111111111',
+  'Test User',
+  'test@stayfinder.local',
   '2026-12-18',
   '2026-12-21',
   2,
@@ -250,9 +251,9 @@ VALUES
 (
   'b1000000-0000-4000-8000-000000000003',
   'a1000000-0000-4000-8000-000000000003',
-  '56db4e63-6dcc-426c-9cdd-e1c266aafea9',
-  'Aisha Hashi',
-  'aisha_1@live.se',
+  '11111111-1111-4111-8111-111111111111',
+  'Test User',
+  'test@stayfinder.local',
   '2027-01-15',
   '2027-01-19',
   2,
@@ -262,9 +263,9 @@ VALUES
 (
   'b1000000-0000-4000-8000-000000000004',
   'a1000000-0000-4000-8000-000000000004',
-  '56db4e63-6dcc-426c-9cdd-e1c266aafea9',
-  'Aisha Hashi',
-  'aisha_1@live.se',
+  '11111111-1111-4111-8111-111111111111',
+  'Test User',
+  'test@stayfinder.local',
   '2027-02-10',
   '2027-02-14',
   4,
@@ -274,9 +275,9 @@ VALUES
 (
   'b1000000-0000-4000-8000-000000000005',
   'a1000000-0000-4000-8000-000000000005',
-  '56db4e63-6dcc-426c-9cdd-e1c266aafea9',
-  'Aisha Hashi',
-  'aisha_1@live.se',
+  '11111111-1111-4111-8111-111111111111',
+  'Test User',
+  'test@stayfinder.local',
   '2027-03-05',
   '2027-03-08',
   3,
@@ -286,9 +287,9 @@ VALUES
 (
   'b1000000-0000-4000-8000-000000000006',
   'a1000000-0000-4000-8000-000000000006',
-  '56db4e63-6dcc-426c-9cdd-e1c266aafea9',
-  'Aisha Hashi',
-  'aisha_1@live.se',
+  '11111111-1111-4111-8111-111111111111',
+  'Test User',
+  'test@stayfinder.local',
   '2027-04-12',
   '2027-04-16',
   3,
@@ -311,10 +312,10 @@ DO UPDATE SET
 
 SELECT 'properties' AS table_name, COUNT(*) AS total
 FROM public.properties
-WHERE user_id = '56db4e63-6dcc-426c-9cdd-e1c266aafea9'
+WHERE user_id = '11111111-1111-4111-8111-111111111111'
 
 UNION ALL
 
 SELECT 'bookings' AS table_name, COUNT(*) AS total
 FROM public.bookings
-WHERE user_id = '56db4e63-6dcc-426c-9cdd-e1c266aafea9';
+WHERE user_id = '11111111-1111-4111-8111-111111111111';
