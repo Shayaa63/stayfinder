@@ -7,7 +7,7 @@ const envSchema = z.object({
     .enum(["development", "production", "test"])
     .default("development"),
 
-  HONO_PORT: z.coerce.number().default(3001),
+  HONO_PORT: z.coerce.number().default(4000),
 
   FRONTEND_URL: z
     .string()
