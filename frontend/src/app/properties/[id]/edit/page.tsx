@@ -32,10 +32,9 @@ function EditPropertyContent() {
   useEffect(() => {
     if (authLoading) return;
 
-    if (!user) {
-      setPageLoading(false);
-      return;
-    }
+   if (!user) {
+  return;
+}
 
     async function fetchProperty() {
       try {
@@ -104,7 +103,7 @@ function EditPropertyContent() {
     }
   }
 
-  if (authLoading || pageLoading) {
+  if (authLoading || (user && pageLoading)) {
     return <p className="p-8">Laddar boende...</p>;
   }
 
@@ -227,7 +226,7 @@ function EditPropertyContent() {
             required
             type="number"
             min="1"
-            max="50"
+            max="30"
             step="1"
             value={maxGuests}
             onChange={(event) => setMaxGuests(event.target.value)}

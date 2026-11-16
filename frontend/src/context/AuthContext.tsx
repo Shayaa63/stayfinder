@@ -45,8 +45,32 @@ export function AuthProvider({
   }
 
   useEffect(() => {
-    void refreshUser();
-  }, []);
+  let active = true;
+
+  async function loadInitialUser() {
+    try {
+      const result = await api<{ user: User }>("/auth/me");
+
+      if (active) {
+        setUser(result.user);
+      }
+    } catch {
+      if (active) {
+        setUser(null);
+      }
+    } finally {
+      if (active) {
+        setLoading(false);
+      }
+    }
+  }
+
+  void loadInitialUser();
+
+  return () => {
+    active = false;
+  };
+}, []);
 
   return (
     <AuthContext.Provider

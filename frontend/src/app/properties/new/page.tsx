@@ -181,7 +181,7 @@ export default function NewPropertyPage() {
             required
             type="number"
             min="1"
-            max="50"
+            max="30"
             step="1"
             value={maxGuests}
             onChange={(event) => setMaxGuests(event.target.value)}

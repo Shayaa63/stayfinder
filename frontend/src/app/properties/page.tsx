@@ -52,9 +52,42 @@ export default function PropertiesPage() {
     }
   }
 
-  useEffect(() => {
-    void searchProperties();
-  }, []);
+ useEffect(() => {
+  let active = true;
+
+  async function loadInitialProperties() {
+    try {
+      const params = new URLSearchParams();
+      params.set("guests", "1");
+      params.set("sort", "price_asc");
+
+      const result = await api<{
+        properties: Property[];
+        total: number;
+      }>(`/properties?${params.toString()}`);
+
+      if (active) {
+        setProperties(result.properties);
+      }
+    } catch (err) {
+      if (active) {
+        setError(
+          err instanceof Error ? err.message : "Kunde inte hämta boenden."
+        );
+      }
+    } finally {
+      if (active) {
+        setLoading(false);
+      }
+    }
+  }
+
+  void loadInitialProperties();
+
+  return () => {
+    active = false;
+  };
+}, []);
 
   return (
     <main className="mx-auto max-w-6xl px-6 py-12">
@@ -62,7 +95,7 @@ export default function PropertiesPage() {
 
       <div className="my-6 grid grid-cols-1 gap-4 rounded-xl border border-stone-200 p-5 sm:grid-cols-2 lg:grid-cols-4">
         <div>
-          <label className="mb-2 block text-sm font-medium text-stone-700">
+          <label className="mb-2 block text-sm font-medium  text-stone-700">
             Stad
           </label>
           <input
@@ -75,7 +108,7 @@ export default function PropertiesPage() {
         </div>
 
         <div>
-          <label className="mb-2 block text-sm font-medium text-stone-700">
+          <label className="mb-2 block text-sm font-medium  text-stone-700">
             Minsta antal gäster
           </label>
           <input
@@ -88,7 +121,7 @@ export default function PropertiesPage() {
         </div>
 
         <div>
-          <label className="mb-2 block text-sm font-medium text-stone-700">
+          <label className="mb-2 block text-sm font-medium  text-stone-700">
             Maxpris per natt (kr)
           </label>
           <input
@@ -102,7 +135,7 @@ export default function PropertiesPage() {
         </div>
 
         <div>
-          <label className="mb-2 block text-sm font-medium text-stone-700">
+          <label className="mb-2 block text-sm   text-stone-700">
             Sortera efter pris
           </label>
           <select
@@ -142,7 +175,7 @@ export default function PropertiesPage() {
 
     <button
       onClick={() => void searchProperties()}
-      className="mt-4 rounded-lg bg-stone-900 px-5 py-3 text-white hover:bg-stone-700"
+      className="mt-4 rounded-lg bg-stone-900 px-5 py-3  text-white  hover:bg-stone-700"
     >
       Försök igen
     </button>

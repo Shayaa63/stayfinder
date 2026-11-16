@@ -15,7 +15,7 @@ function NavLink({
   return (
     <Link
       href={href}
-      className="rounded-full px-3 py-2 text-sm font-medium text-[#766b60] transition hover:bg-[#faf8f4] hover:text-[#342e28]"
+      className="rounded-full px-3 py-2 text-sm font-medium  text-[#766b60] transition hover:bg-[#faf8f4] hover:text-[#342e28]"
     >
       {children}
     </Link>
@@ -59,7 +59,7 @@ export default function Navbar() {
               <button
                 type="button"
                 onClick={() => void logout()}
-                className="rounded-full px-3 py-2 text-sm font-medium text-[#82796f] transition hover:bg-[#faf8f4] hover:text-[#342e28]"
+                className="rounded-full px-3 py-2 text-sm font-medium  text-[#82796f] transition hover:bg-[#faf8f4] hover:text-[#342e28]"
               >
                 Logga ut
               </button>

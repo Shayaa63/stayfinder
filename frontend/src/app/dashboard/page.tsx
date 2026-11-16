@@ -64,7 +64,7 @@ function SectionHeading({
         <p className="mt-1 text-sm text-[#82796f]">{description}</p>
       </div>
 
-      <span className="rounded-full bg-[#f0ebe3] px-3 py-1.5 text-sm font-medium text-[#685b4d]">
+      <span className="rounded-full bg-[#f0ebe3] px-3 py-1.5 text-sm font-medium  text-[#685b4d]">
         {count} {count === 1 ? "objekt" : "objekt"}
       </span>
     </div>
@@ -82,9 +82,6 @@ export default function DashboardPage() {
 
   const [error, setError] = useState("");
   const [updatingBookingId, setUpdatingBookingId] = useState<string | null>(
-    null,
-  );
-  const [deletingBookingId, setDeletingBookingId] = useState<string | null>(
     null,
   );
   const [editingBookingId, setEditingBookingId] = useState<string | null>(null);
@@ -184,33 +181,7 @@ export default function DashboardPage() {
     }
   }
 
-  async function deleteBooking(bookingId: string) {
-    const confirmed = window.confirm(
-      "Är du säker på att du vill ta bort den här bokningen?",
-    );
 
-    if (!confirmed) return;
-
-    try {
-      setError("");
-      setDeletingBookingId(bookingId);
-
-      await api(`/bookings/${bookingId}`, {
-        method: "DELETE",
-      });
-
-      setData((current) => ({
-        ...current,
-        bookings: current.bookings.filter(
-          (booking) => booking.booking_id !== bookingId,
-        ),
-      }));
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Kunde inte ta bort bokningen");
-    } finally {
-      setDeletingBookingId(null);
-    }
-  }
 
   async function editBooking(bookingId: string) {
     try {
@@ -332,7 +303,7 @@ export default function DashboardPage() {
 
             <Link
               href="/properties"
-              className="mt-8 inline-flex items-center gap-3 rounded-full bg-[#342e28] px-6 py-3.5 text-sm font-medium text-white transition hover:bg-[#514438]"
+              className="mt-8 inline-flex items-center gap-3 rounded-full bg-[#342e28] px-6 py-3.5 text-sm   text-white transition hover:bg-[#514438]"
             >
               Utforska boenden
               <span aria-hidden="true">↗</span>
@@ -405,7 +376,7 @@ export default function DashboardPage() {
           />
 
           {data.properties.length === 0 ? (
-            <div className="rounded-3xl border border-dashed border-[#d9d0c5] bg-white px-6 py-12 text-center">
+            <div className="rounded-3xl border border-dashed  border-[#d9d0c5] bg-white px-6 py-12 text-center">
               <p className="text-lg font-medium">Ditt första boende börjar här.</p>
               <p className="mt-2 text-sm text-[#8b8176]">
                 Du har inte lagt till något boende ännu.
@@ -441,7 +412,7 @@ export default function DashboardPage() {
                         </div>
                       )}
 
-                      <span className="absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1.5 text-xs font-medium text-[#514438] backdrop-blur">
+                      <span className="absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1.5 text-xs font-medium  text-[#514438] backdrop-blur">
                         Ditt boende
                       </span>
                     </div>
@@ -537,7 +508,7 @@ export default function DashboardPage() {
                           updateBookingStatus(booking.booking_id, "confirmed")
                         }
                         disabled={updatingBookingId === booking.booking_id}
-                        className="flex-1 rounded-full bg-[#435747] px-4 py-3 text-sm font-medium text-white transition hover:bg-[#344738] disabled:opacity-50"
+                        className="flex-1 rounded-full bg-[#435747] px-4 py-3 text-sm font-medium  text-white transition hover:bg-[#344738] disabled:opacity-50"
                       >
                         {updatingBookingId === booking.booking_id
                           ? "Updating..."
@@ -550,23 +521,12 @@ export default function DashboardPage() {
                           updateBookingStatus(booking.booking_id, "cancelled")
                         }
                         disabled={updatingBookingId === booking.booking_id}
-                        className="rounded-full border border-[#e5d9d0] px-4 py-3 text-sm font-medium text-[#9c5b4d] transition hover:bg-[#fbf3f0] disabled:opacity-50"
+                        className="rounded-full border border-[#e5d9d0] px-4 py-3 text-sm font-medium  text-[#9c5b4d] transition hover:bg-[#fbf3f0] disabled:opacity-50"
                       >
                         Decline
                       </button>
                     </div>
                   )}
-
-                  <button
-                    type="button"
-                    onClick={() => deleteBooking(booking.booking_id)}
-                    disabled={deletingBookingId === booking.booking_id}
-                    className="mt-4 text-xs font-medium text-[#a16b60] transition hover:text-red-800 disabled:opacity-50"
-                  >
-                    {deletingBookingId === booking.booking_id
-                      ? "Tar bort..."
-                      : "Ta bort bokning"}
-                  </button>
                 </article>
               ))}
             </div>
@@ -640,7 +600,7 @@ export default function DashboardPage() {
                           <div>
                             <label
                               htmlFor={`edit-check-in-${booking.booking_id}`}
-                              className="block text-xs font-medium text-[#766b60]"
+                              className="block text-xs font-medium  text-[#766b60]"
                             >
                               Incheckning
                             </label>
@@ -649,14 +609,14 @@ export default function DashboardPage() {
                               type="date"
                               value={editCheckIn}
                               onChange={(e) => setEditCheckIn(e.target.value)}
-                              className="mt-2 w-full rounded-xl border border-[#e2d9ce] bg-white p-3 text-sm outline-none focus:border-[#92755c]"
+                              className="mt-2 w-full rounded-xl border border-[#e2d9ce] bg-white p-3 text-sm outline-none  focus:border-[#92755c]"
                             />
                           </div>
 
                           <div>
                             <label
                               htmlFor={`edit-check-out-${booking.booking_id}`}
-                              className="block text-xs font-medium text-[#766b60]"
+                              className="block text-xs font-medium  text-[#766b60]"
                             >
                               Utcheckning
                             </label>
@@ -666,14 +626,14 @@ export default function DashboardPage() {
                               min={editCheckIn || undefined}
                               value={editCheckOut}
                               onChange={(e) => setEditCheckOut(e.target.value)}
-                              className="mt-2 w-full rounded-xl border border-[#e2d9ce] bg-white p-3 text-sm outline-none focus:border-[#92755c]"
+                              className="mt-2 w-full rounded-xl border border-[#e2d9ce] bg-white p-3 text-sm outline-none  focus:border-[#92755c]"
                             />
                           </div>
 
                           <div>
                             <label
                               htmlFor={`edit-guests-${booking.booking_id}`}
-                              className="block text-xs font-medium text-[#766b60]"
+                              className="block text-xs   text-[#766b60]"
                             >
                               Antal gäster
                             </label>
@@ -681,10 +641,10 @@ export default function DashboardPage() {
                               id={`edit-guests-${booking.booking_id}`}
                               type="number"
                               min="1"
-                              max="50"
+                              max="30"
                               value={editGuests}
                               onChange={(e) => setEditGuests(Number(e.target.value))}
-                              className="mt-2 w-full rounded-xl border border-[#e2d9ce] bg-white p-3 text-sm outline-none focus:border-[#92755c]"
+                              className="mt-2 w-full rounded-xl border border-[#e2d9ce] bg-white p-3 text-sm   focus:border-[#92755c]"
                             />
                           </div>
                         </div>
@@ -744,17 +704,6 @@ export default function DashboardPage() {
                         </button>
                       </>
                     )}
-
-                    <button
-                      type="button"
-                      onClick={() => deleteBooking(booking.booking_id)}
-                      disabled={deletingBookingId === booking.booking_id}
-                      className="ml-auto text-xs font-medium text-[#a16b60] transition hover:text-red-800 disabled:opacity-50"
-                    >
-                      {deletingBookingId === booking.booking_id
-                        ? "Tar bort..."
-                        : "Ta bort bokning"}
-                    </button>
                   </div>
                 </article>
               ))}
@@ -768,16 +717,16 @@ export default function DashboardPage() {
             DIN NÄSTA MÅL
           </p>
           <h2 className="mt-3 text-2xl font-semibold tracking-tight">
-            Någonstans ny är väntan.
+            Någonstans nytt väntan.
           </h2>
           <p className="mt-2 text-sm text-[#74695d]">
             Upptäck ett boende där du kan känna dig som hemma.
           </p>
           <Link
             href="/properties"
-            className="mt-6 inline-flex rounded-full bg-[#342e28] px-6 py-3 text-sm font-medium text-white transition hover:bg-[#514438]"
+            className="mt-6 inline-flex rounded-full bg-[#342e28] px-6 py-3 text-sm font-medium  text-white transition hover:bg-[#514438]"
           >
-            Bläddra bland alla egenskaper ↗
+            Bläddra bland alla boenden ↗
           </Link>
         </section>
 
